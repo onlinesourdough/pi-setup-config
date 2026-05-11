@@ -8,6 +8,6 @@
   "doubleEscapeAction": "tree",
   "collapseChangelog": true,
   "packages": [
-    "npm:pi-session-auto-rename"
+    ""
   ]
 }
