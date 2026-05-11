@@ -1,13 +1,16 @@
 {
-  "lastChangelogVersion": "0.57.1",
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.3-codex",
-  "theme": "warp-calm-light-blue",
-  "defaultThinkingLevel": "xhigh",
-  "hideThinkingBlock": false,
-  "doubleEscapeAction": "tree",
-  "collapseChangelog": true,
   "packages": [
-    ""
-  ]
+    "git:https://github.com/badlogic/pi-skills",
+    "npm:context-mode",
+    "npm:pi-schedule-prompt"
+  ],
+  "lastChangelogVersion": "0.74.0",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.5",
+  "defaultThinkingLevel": "off",
+  "theme": "pi-desktop-catppuccin-light",
+  "terminal": {
+    "showTerminalProgress": true
+  },
+  "transport": "auto"
 }
