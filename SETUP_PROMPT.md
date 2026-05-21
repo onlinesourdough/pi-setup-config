@@ -10,7 +10,7 @@ Do this:
 
 1. Ask me which platform profile to apply:
    - `macos` -> use `config/macos/settings.json`
-   - `windows` -> use `config/windows/settings.json`
+   - `windows` -> use `config/windows/settings.json` for local models
    - if I do not answer, infer from OS and use macOS on Darwin, Windows on Windows
 2. Verify these exist:
    - selected profile settings file
@@ -31,14 +31,17 @@ Do this:
    - do not manually copy package caches/git clones from another machine
 7. Ensure skill scripts are executable on macOS/Linux:
    - run `find ~/.pi/agent/skills -type f -name "*.js" -exec chmod +x {} +`
-8. Do not set up local model providers from this repo; local/model-provider setup is handled separately.
+8. If Windows/local models profile is selected:
+   - confirm the local OpenAI-compatible server is running
+   - default endpoint is `http://localhost:1234/v1`
+   - remind me to set `LOCAL_OPENAI_MODEL`, `LOCAL_OPENAI_BASE_URL`, and `LOCAL_OPENAI_API_KEY` if needed
 9. Confirm result:
    - show active theme from `~/.pi/agent/settings.json`
    - show provider/model/thinking level
    - list packages from `~/.pi/agent/settings.json`
-   - list installed local skill folders from this repo, including `vps-temporary-ssh`
+   - list installed local skill folders, including brave-search, vps-temporary-ssh and ctx/context-mode skills
    - list installed extension files/folders
-   - remind me to set `BRAVE_API_KEY` locally if I use `brave-search` from another skill source
+   - remind me to set `BRAVE_API_KEY` locally if I want to use `brave-search`
 10. Give me a short summary.
 
 Only touch settings/themes/skills/extensions/packages. Do not touch auth, login, session, history, or cache files except what PI itself updates while installing packages.
