@@ -1,0 +1,81 @@
+{
+  "providers": {
+    "lemonade-local": {
+      "baseUrl": "http://127.0.0.1:13305/v1",
+      "api": "openai-completions",
+      "apiKey": "lemonade",
+      "compat": {
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false,
+        "supportsUsageInStreaming": false,
+        "maxTokensField": "max_tokens",
+        "thinkingFormat": "qwen-chat-template"
+      },
+      "models": [
+        {
+          "id": "Gemma-4-31B-it-GGUF",
+          "name": "Lemonade Local AI (Gemma 4 31B, no thinking)",
+          "reasoning": true,
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 131072,
+          "maxTokens": 4096,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          },
+          "thinkingLevelMap": {
+            "minimal": null,
+            "low": null,
+            "medium": null,
+            "high": null,
+            "xhigh": null
+          }
+        }
+      ]
+    },
+    "lemonade-local-thinking": {
+      "baseUrl": "http://127.0.0.1:13305/v1",
+      "api": "openai-completions",
+      "apiKey": "lemonade",
+      "compat": {
+        "supportsDeveloperRole": false,
+        "supportsReasoningEffort": false,
+        "supportsUsageInStreaming": false,
+        "maxTokensField": "max_tokens",
+        "thinkingFormat": "qwen-chat-template"
+      },
+      "models": [
+        {
+          "id": "Gemma-4-31B-it-GGUF",
+          "name": "Lemonade Local AI (Gemma 4 31B, thinking)",
+          "reasoning": true,
+          "thinkingLevelMap": {
+            "off": null,
+            "minimal": "minimal",
+            "low": "low",
+            "medium": "medium",
+            "high": "high",
+            "xhigh": "xhigh"
+          },
+          "input": [
+            "text",
+            "image"
+          ],
+          "contextWindow": 131072,
+          "maxTokens": 4096,
+          "cost": {
+            "input": 0,
+            "output": 0,
+            "cacheRead": 0,
+            "cacheWrite": 0
+          }
+        }
+      ]
+    }
+  }
+}

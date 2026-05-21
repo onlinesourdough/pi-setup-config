@@ -14,6 +14,7 @@ Do this:
    - if I do not answer, infer from OS and use macOS on Darwin, Windows on Windows
 2. Verify these exist:
    - selected profile settings file
+   - `config/windows/models.json` if Windows profile is selected
    - `config/themes`
    - `config/skills`
    - `config/extensions`
@@ -22,6 +23,7 @@ Do this:
    - `~/.pi/agent` -> `~/.pi/agent.backup-<timestamp>`
 5. Apply repo config to `~/.pi/agent`:
    - copy selected profile settings file to `~/.pi/agent/settings.json`
+   - if Windows profile is selected, copy `config/windows/models.json` to `~/.pi/agent/models.json`
    - replace `~/.pi/agent/themes` with `config/themes`
    - replace `~/.pi/agent/skills` with `config/skills`
    - replace `~/.pi/agent/extensions` with `config/extensions`
@@ -32,12 +34,13 @@ Do this:
 7. Ensure skill scripts are executable on macOS/Linux:
    - run `find ~/.pi/agent/skills -type f -name "*.js" -exec chmod +x {} +`
 8. If Windows/local models profile is selected:
-   - confirm the local OpenAI-compatible server is running
-   - default endpoint is `http://localhost:1234/v1`
-   - remind me to set `LOCAL_OPENAI_MODEL`, `LOCAL_OPENAI_BASE_URL`, and `LOCAL_OPENAI_API_KEY` if needed
+   - confirm Lemonade/local OpenAI-compatible server is running
+   - default endpoint is `http://127.0.0.1:13305/v1`
+   - remind me to edit `~/.pi/agent/models.json` if endpoint/model changes
 9. Confirm result:
    - show active theme from `~/.pi/agent/settings.json`
    - show provider/model/thinking level
+   - if Windows profile is selected, show configured local model base URL from `~/.pi/agent/models.json`
    - list packages from `~/.pi/agent/settings.json`
    - list installed local skill folders, including brave-search, vps-temporary-ssh and ctx/context-mode skills
    - list installed extension files/folders

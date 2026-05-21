@@ -12,14 +12,16 @@ Repoet spejler portable PI-konfigurationer: settings, lokale skills, extensions 
   - thinking: `low`
   - packages: `npm:context-mode`
 - `config/windows/settings.json` — Windows/local-model setup:
-  - provider/model: `local-openai` / `local-model`
-  - bruger `config/extensions/local-openai-provider.ts`
-  - default endpoint: `http://localhost:1234/v1` (LM Studio/OpenAI-compatible)
+  - provider/model: `lemonade-local-thinking` / `Gemma-4-31B-it-GGUF`
+  - thinking: `low`
+  - packages: `npm:context-mode`
+- `config/windows/models.json` — Windows local model provider config:
+  - Lemonade/OpenAI-compatible endpoint: `http://127.0.0.1:13305/v1`
 - `config/skills/`
   - `brave-search`
   - `vps-temporary-ssh`
   - context-mode skills: `context-mode`, `ctx-doctor`, `ctx-insight`, `ctx-purge`, `ctx-stats`, `ctx-upgrade`
-- `config/extensions/` — lokale PI extensions, inkl. Superset hooks, smart voice notify og local OpenAI provider.
+- `config/extensions/` — lokale PI extensions, pt. Superset hooks.
 - `config/themes/` — lokale/valgte themes.
 
 `git:https://github.com/badlogic/pi-skills` er bevidst fjernet; repoet bruger den lokale `brave-search` skill i stedet.
@@ -46,23 +48,9 @@ I PI: bed den om at følge `SETUP_PROMPT.md` og vælge macOS.
 ## Ny Windows maskine med lokale modeller
 
 1. Installer PI, Git og Node.js.
-2. Start din lokale OpenAI-compatible server, fx LM Studio på `http://localhost:1234/v1`.
+2. Start Lemonade/local OpenAI-compatible server på `http://127.0.0.1:13305/v1`.
 3. Clone repoet og følg `SETUP_PROMPT.md`; vælg Windows.
-4. Hvis din lokale model ikke hedder `local-model`, sæt env vars før PI startes:
-
-```powershell
-[Environment]::SetEnvironmentVariable("LOCAL_OPENAI_MODEL", "din-model-id", "User")
-[Environment]::SetEnvironmentVariable("LOCAL_OPENAI_BASE_URL", "http://localhost:1234/v1", "User")
-[Environment]::SetEnvironmentVariable("LOCAL_OPENAI_API_KEY", "not-needed", "User")
-```
-
-For Ollama OpenAI-compatible endpoint kan du fx bruge:
-
-```powershell
-[Environment]::SetEnvironmentVariable("LOCAL_OPENAI_BASE_URL", "http://localhost:11434/v1", "User")
-[Environment]::SetEnvironmentVariable("LOCAL_OPENAI_MODEL", "qwen2.5-coder:32b", "User")
-[Environment]::SetEnvironmentVariable("LOCAL_OPENAI_API_KEY", "ollama", "User")
-```
+4. Hvis endpoint/model ændrer sig, ret `~/.pi/agent/models.json` efter setup.
 
 ## Manuelt setup macOS
 
@@ -91,6 +79,7 @@ cd $HOME\Downloads\pi-setup-config
 $target = Join-Path $HOME ".pi\agent"
 New-Item -ItemType Directory -Force -Path $target | Out-Null
 Copy-Item .\config\windows\settings.json (Join-Path $target "settings.json") -Force
+Copy-Item .\config\windows\models.json (Join-Path $target "models.json") -Force
 Remove-Item (Join-Path $target "themes") -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item (Join-Path $target "skills") -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item (Join-Path $target "extensions") -Recurse -Force -ErrorAction SilentlyContinue

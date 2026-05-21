@@ -3,12 +3,12 @@
     "npm:context-mode"
   ],
   "lastChangelogVersion": "0.75.4",
-  "defaultModel": "local-model",
+  "defaultProvider": "lemonade-local-thinking",
+  "defaultModel": "Gemma-4-31B-it-GGUF",
   "defaultThinkingLevel": "low",
   "theme": "pi-desktop-catppuccin-light",
   "terminal": {
     "showTerminalProgress": true
   },
-  "transport": "auto",
-  "defaultProvider": "local-openai"
+  "transport": "auto"
 }
