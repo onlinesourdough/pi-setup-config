@@ -33,14 +33,15 @@ Do this:
    - do not manually copy package caches/git clones from another machine
 7. Ensure skill scripts are executable on macOS/Linux:
    - run `find ~/.pi/agent/skills -type f -name "*.js" -exec chmod +x {} +`
-8. If Windows/local models profile is selected:
-   - confirm Lemonade/local OpenAI-compatible server is running
-   - default endpoint is `http://127.0.0.1:13305/v1`
+8. If Windows profile is selected:
+   - explain that local Lemonade models are included in `~/.pi/agent/models.json` for manual selection, but are not the default model
+   - default local endpoint is `http://127.0.0.1:13305/v1`
+   - remind me to start Lemonade/local server before selecting local models
    - remind me to edit `~/.pi/agent/models.json` if endpoint/model changes
 9. Confirm result:
    - show active theme from `~/.pi/agent/settings.json`
    - show provider/model/thinking level
-   - if Windows profile is selected, show configured local model base URL from `~/.pi/agent/models.json`
+   - if Windows profile is selected, show configured local model base URL from `~/.pi/agent/models.json` and confirm the default provider/model is still non-local unless changed by the user
    - list packages from `~/.pi/agent/settings.json`
    - list installed local skill folders, including brave-search, vps-temporary-ssh and ctx/context-mode skills
    - list installed extension files/folders

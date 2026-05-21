@@ -11,12 +11,13 @@ Repoet spejler portable PI-konfigurationer: settings, lokale skills, extensions 
   - provider/model: `openai-codex` / `gpt-5.5`
   - thinking: `low`
   - packages: `npm:context-mode`
-- `config/windows/settings.json` — Windows/local-model setup:
-  - provider/model: `lemonade-local-thinking` / `Gemma-4-31B-it-GGUF`
+- `config/windows/settings.json` — Windows setup:
+  - default provider/model: `openai-codex` / `gpt-5.5`
   - thinking: `low`
   - packages: `npm:context-mode`
-- `config/windows/models.json` — Windows local model provider config:
+- `config/windows/models.json` — Windows local model provider config, så lokale modeller kan vælges manuelt:
   - Lemonade/OpenAI-compatible endpoint: `http://127.0.0.1:13305/v1`
+  - inkluderer `lemonade-local` og `lemonade-local-thinking` med `Gemma-4-31B-it-GGUF`
 - `config/skills/`
   - `brave-search`
   - `vps-temporary-ssh`
@@ -48,9 +49,10 @@ I PI: bed den om at følge `SETUP_PROMPT.md` og vælge macOS.
 ## Ny Windows maskine med lokale modeller
 
 1. Installer PI, Git og Node.js.
-2. Start Lemonade/local OpenAI-compatible server på `http://127.0.0.1:13305/v1`.
-3. Clone repoet og følg `SETUP_PROMPT.md`; vælg Windows.
-4. Hvis endpoint/model ændrer sig, ret `~/.pi/agent/models.json` efter setup.
+2. Clone repoet og følg `SETUP_PROMPT.md`; vælg Windows.
+3. Windows-profilen inkluderer Lemonade/local OpenAI-compatible modeller i `models.json`, men bruger ikke lokal model som default.
+4. Start Lemonade/local server på `http://127.0.0.1:13305/v1`, hvis du vil vælge de lokale modeller manuelt.
+5. Hvis endpoint/model ændrer sig, ret `~/.pi/agent/models.json` efter setup.
 
 ## Manuelt setup macOS
 
