@@ -2,164 +2,131 @@
 
 Backup og bootstrap-guide til Gustavs PI setup.
 
-Formålet er: på en ny maskine installerer du PI, cloner dette repo, og beder PI om at følge `SETUP_PROMPT.md`. Repoet indeholder kun konfiguration og egne skills/themes — ikke auth, sessions, caches, installerede `node_modules` eller API keys.
+Repoet spejler portable PI-konfigurationer: settings, lokale skills, extensions og themes. Det indeholder ikke auth, sessions, caches, `node_modules` eller API keys.
 
-## Hvad der er spejlet her
+## Spejlet indhold
 
-- `config/settings.json` — nuværende PI settings:
+- `config/settings.json` — macOS-default og bagudkompatibel default.
+- `config/macos/settings.json` — macOS setup:
   - provider/model: `openai-codex` / `gpt-5.5`
-  - thinking: `off`
-  - theme: `pi-desktop-catppuccin-light`
-  - packages/extensions der skal hentes af PI:
-    - `git:https://github.com/badlogic/pi-skills`
-    - `npm:context-mode`
-    - `npm:pi-schedule-prompt`
-- `config/themes/` — custom/valgte themes, inkl. aktivt `pi-desktop-catppuccin-light`.
-- `config/skills/` — egne lokale skills, fx `brave-search` og `vps-temporary-ssh`.
+  - thinking: `low`
+  - packages: `npm:context-mode`
+- `config/windows/settings.json` — Windows/local-model setup:
+  - provider/model: `local-openai` / `local-model`
+  - bruger `config/extensions/local-openai-provider.ts`
+  - default endpoint: `http://localhost:1234/v1` (LM Studio/OpenAI-compatible)
+- `config/skills/`
+  - `brave-search`
+  - `vps-temporary-ssh`
+  - context-mode skills: `context-mode`, `ctx-doctor`, `ctx-insight`, `ctx-purge`, `ctx-stats`, `ctx-upgrade`
+- `config/extensions/` — lokale PI extensions, inkl. Superset hooks, smart voice notify og local OpenAI provider.
+- `config/themes/` — lokale/valgte themes.
 
-## Det der bevidst ikke er med
+`git:https://github.com/badlogic/pi-skills` er bevidst fjernet; repoet bruger den lokale `brave-search` skill i stedet.
+
+## Ikke inkluderet
 
 - `~/.pi/agent/auth*`, login, sessions, history og caches.
-- `node_modules` og andre genererede dependencies.
-- API keys/secrets, fx `BRAVE_API_KEY`.
-- Allerede installerede package-kopier under `~/.pi/agent/git` eller npm cache. De bliver hentet igen via `settings.json`/`pi install`.
+- `node_modules`, npm/git package caches og genererede filer.
+- Secrets/API keys, fx `BRAVE_API_KEY`.
 
-## Ny macOS maskine: fra nul til samme setup
-
-### 1. Installer forudsætninger
+## Ny macOS maskine
 
 ```bash
-# hvis Node/npm mangler, installer fx via Homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 brew install node git
-
-# installer PI
 npm install -g @earendil-works/pi-coding-agent
-```
 
-### 2. Start PI og log ind
-
-```bash
-pi
-/login
-```
-
-Vælg den provider/login-metode du vil bruge. Auth bliver kun på maskinen og skal ikke committes.
-
-### 3. Clone dette setup-repo
-
-```bash
-cd ~/Downloads
-git clone https://github.com/gustavonline/pi-setup-config.git
-cd pi-setup-config
-```
-
-### 4. Giv repoet til PI
-
-Start PI i repoet og indsæt prompten fra `SETUP_PROMPT.md`:
-
-```bash
+git clone https://github.com/gustavonline/pi-setup-config.git ~/Downloads/pi-setup-config
+cd ~/Downloads/pi-setup-config
 pi
 ```
 
-Eller sig kort:
+I PI: bed den om at følge `SETUP_PROMPT.md` og vælge macOS.
 
-> Følg `SETUP_PROMPT.md` og sæt min PI config op fra dette repo.
+## Ny Windows maskine med lokale modeller
 
-PI skal kun røre `settings`, `themes` og `skills` — ikke auth/session-filer.
+1. Installer PI, Git og Node.js.
+2. Start din lokale OpenAI-compatible server, fx LM Studio på `http://localhost:1234/v1`.
+3. Clone repoet og følg `SETUP_PROMPT.md`; vælg Windows.
+4. Hvis din lokale model ikke hedder `local-model`, sæt env vars før PI startes:
 
-### 5. Secrets/API keys pr. maskine
-
-Hvis du bruger `brave-search`, skal Brave Search API key sættes lokalt:
-
-```bash
-echo 'export BRAVE_API_KEY="your-api-key-here"' >> ~/.zprofile
-source ~/.zprofile
+```powershell
+[Environment]::SetEnvironmentVariable("LOCAL_OPENAI_MODEL", "din-model-id", "User")
+[Environment]::SetEnvironmentVariable("LOCAL_OPENAI_BASE_URL", "http://localhost:1234/v1", "User")
+[Environment]::SetEnvironmentVariable("LOCAL_OPENAI_API_KEY", "not-needed", "User")
 ```
 
-Opret key her: https://api-dashboard.search.brave.com/register
+For Ollama OpenAI-compatible endpoint kan du fx bruge:
 
-### 6. Genstart PI
+```powershell
+[Environment]::SetEnvironmentVariable("LOCAL_OPENAI_BASE_URL", "http://localhost:11434/v1", "User")
+[Environment]::SetEnvironmentVariable("LOCAL_OPENAI_MODEL", "qwen2.5-coder:32b", "User")
+[Environment]::SetEnvironmentVariable("LOCAL_OPENAI_API_KEY", "ollama", "User")
+```
 
-Luk og start `pi` igen, så packages/extensions/themes/skills loader friskt.
-
-## Manuelt setup uden assistant
-
-Hvis du vil gøre det selv:
+## Manuelt setup macOS
 
 ```bash
 cd ~/Downloads/pi-setup-config
 
 mkdir -p ~/.pi
 [ -d ~/.pi/agent ] && cp -R ~/.pi/agent ~/.pi/agent.backup.$(date +%Y%m%d-%H%M%S)
-
 mkdir -p ~/.pi/agent
-cp config/settings.json ~/.pi/agent/settings.json
-rm -rf ~/.pi/agent/themes ~/.pi/agent/skills
+
+cp config/macos/settings.json ~/.pi/agent/settings.json
+rm -rf ~/.pi/agent/themes ~/.pi/agent/skills ~/.pi/agent/extensions
 cp -R config/themes ~/.pi/agent/themes
 cp -R config/skills ~/.pi/agent/skills
+cp -R config/extensions ~/.pi/agent/extensions
 
-# Installer PI packages/extensions fra settings.json
 pi update --extensions || pi update
-
-# Installer deps for lokale skills, hvis de har package.json
-find ~/.pi/agent/skills -name package.json -not -path '*/node_modules/*' -print0 | while IFS= read -r -d '' pkg; do
-  d="$(dirname "$pkg")"
-  (
-    cd "$d"
-    if [ -f package-lock.json ]; then npm ci --omit=dev; else npm install --omit=dev; fi
-  )
-done
-
 find ~/.pi/agent/skills -type f -name "*.js" -exec chmod +x {} +
 ```
 
-## Windows / PowerShell
+## Manuelt setup Windows
 
 ```powershell
-cd $HOME\Downloads
-git clone https://github.com/gustavonline/pi-setup-config.git
-cd .\pi-setup-config
+cd $HOME\Downloads\pi-setup-config
 
 $target = Join-Path $HOME ".pi\agent"
 New-Item -ItemType Directory -Force -Path $target | Out-Null
-Copy-Item .\config\settings.json (Join-Path $target "settings.json") -Force
+Copy-Item .\config\windows\settings.json (Join-Path $target "settings.json") -Force
 Remove-Item (Join-Path $target "themes") -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item (Join-Path $target "skills") -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item (Join-Path $target "extensions") -Recurse -Force -ErrorAction SilentlyContinue
 Copy-Item .\config\themes (Join-Path $target "themes") -Recurse -Force
 Copy-Item .\config\skills (Join-Path $target "skills") -Recurse -Force
+Copy-Item .\config\extensions (Join-Path $target "extensions") -Recurse -Force
 
 pi update --extensions
-
-Get-ChildItem (Join-Path $target "skills") -Recurse -Filter package.json | ForEach-Object {
-  $dir = $_.Directory.FullName
-  Push-Location $dir
-  if (Test-Path "package-lock.json") { npm ci --omit=dev } else { npm install --omit=dev }
-  Pop-Location
-}
 ```
 
-## Hold repoet opdateret
+## Brave Search
 
-Efter ændringer i dit lokale PI setup:
+Sæt API key lokalt på hver maskine:
+
+```bash
+echo 'export BRAVE_API_KEY="your-api-key-here"' >> ~/.zprofile
+source ~/.zprofile
+```
+
+## Opdater repoet fra denne maskine
 
 ```bash
 cd ~/Downloads/pi-setup-config
 
+cp ~/.pi/agent/settings.json config/macos/settings.json
 cp ~/.pi/agent/settings.json config/settings.json
-rm -rf config/themes config/skills
+rm -rf config/themes config/skills config/extensions
 cp -R ~/.pi/agent/themes config/themes
 cp -R ~/.pi/agent/skills config/skills
+cp -R ~/.pi/agent/extensions config/extensions
 
+find config -name .DS_Store -delete
 find config/skills -type d -name node_modules -prune -exec rm -rf {} +
 find config/skills -type f -name .package-lock.json -delete
-find config/skills -type f -name "*.js" -exec chmod +x {} +
 
 git add .
 git commit -m "Update PI setup config"
 git push
 ```
-
-## Hurtig prompt til næste gang
-
-Se `SETUP_PROMPT.md`.

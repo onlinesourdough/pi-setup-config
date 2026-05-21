@@ -1,16 +1,14 @@
 {
   "packages": [
-    "git:https://github.com/badlogic/pi-skills",
-    "npm:context-mode",
-    "npm:pi-schedule-prompt"
+    "npm:context-mode"
   ],
-  "lastChangelogVersion": "0.74.0",
-  "defaultProvider": "openai-codex",
+  "lastChangelogVersion": "0.75.4",
   "defaultModel": "gpt-5.5",
-  "defaultThinkingLevel": "off",
+  "defaultThinkingLevel": "low",
   "theme": "pi-desktop-catppuccin-light",
   "terminal": {
     "showTerminalProgress": true
   },
-  "transport": "auto"
+  "transport": "auto",
+  "defaultProvider": "openai-codex"
 }
