@@ -3,12 +3,12 @@
     "npm:context-mode"
   ],
   "lastChangelogVersion": "0.75.4",
-  "defaultModel": "local-model",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.5",
   "defaultThinkingLevel": "low",
   "theme": "pi-desktop-catppuccin-light",
   "terminal": {
     "showTerminalProgress": true
   },
-  "transport": "auto",
-  "defaultProvider": "local-openai"
+  "transport": "auto"
 }

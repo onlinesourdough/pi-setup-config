@@ -11,18 +11,16 @@ Repoet spejler portable PI-konfigurationer: settings, lokale skills, extensions 
   - provider/model: `openai-codex` / `gpt-5.5`
   - thinking: `low`
   - packages: `npm:context-mode`
-- `config/windows/settings.json` — Windows/local-model setup:
-  - provider/model: `local-openai` / `local-model`
-  - bruger `config/extensions/local-openai-provider.ts`
-  - default endpoint: `http://localhost:1234/v1` (LM Studio/OpenAI-compatible)
+- `config/windows/settings.json` — Windows setup:
+  - provider/model: `openai-codex` / `gpt-5.5`
+  - thinking: `low`
+  - packages: `npm:context-mode`
 - `config/skills/`
-  - `brave-search`
   - `vps-temporary-ssh`
-  - context-mode skills: `context-mode`, `ctx-doctor`, `ctx-insight`, `ctx-purge`, `ctx-stats`, `ctx-upgrade`
-- `config/extensions/` — lokale PI extensions, inkl. Superset hooks, smart voice notify og local OpenAI provider.
+- `config/extensions/` — lokale PI extensions, inkl. Superset hooks og smart voice notify.
 - `config/themes/` — lokale/valgte themes.
 
-`git:https://github.com/badlogic/pi-skills` er bevidst fjernet; repoet bruger den lokale `brave-search` skill i stedet.
+Repoet undgår at spejle package-/git-installerede skills som `brave-search` og context-mode for at undgå skill-conflicts. De installeres/vedligeholdes af PI packages eller eksisterende skill sources.
 
 ## Ikke inkluderet
 
@@ -43,26 +41,11 @@ pi
 
 I PI: bed den om at følge `SETUP_PROMPT.md` og vælge macOS.
 
-## Ny Windows maskine med lokale modeller
+## Ny Windows maskine
 
 1. Installer PI, Git og Node.js.
-2. Start din lokale OpenAI-compatible server, fx LM Studio på `http://localhost:1234/v1`.
-3. Clone repoet og følg `SETUP_PROMPT.md`; vælg Windows.
-4. Hvis din lokale model ikke hedder `local-model`, sæt env vars før PI startes:
-
-```powershell
-[Environment]::SetEnvironmentVariable("LOCAL_OPENAI_MODEL", "din-model-id", "User")
-[Environment]::SetEnvironmentVariable("LOCAL_OPENAI_BASE_URL", "http://localhost:1234/v1", "User")
-[Environment]::SetEnvironmentVariable("LOCAL_OPENAI_API_KEY", "not-needed", "User")
-```
-
-For Ollama OpenAI-compatible endpoint kan du fx bruge:
-
-```powershell
-[Environment]::SetEnvironmentVariable("LOCAL_OPENAI_BASE_URL", "http://localhost:11434/v1", "User")
-[Environment]::SetEnvironmentVariable("LOCAL_OPENAI_MODEL", "qwen2.5-coder:32b", "User")
-[Environment]::SetEnvironmentVariable("LOCAL_OPENAI_API_KEY", "ollama", "User")
-```
+2. Clone repoet og følg `SETUP_PROMPT.md`; vælg Windows.
+3. Local/model-provider setup håndteres separat og spejles ikke længere i dette repo.
 
 ## Manuelt setup macOS
 
@@ -103,7 +86,7 @@ pi update --extensions
 
 ## Brave Search
 
-Sæt API key lokalt på hver maskine:
+`brave-search` spejles ikke som lokal skill i repoet for at undgå conflicts med eksisterende skill-installationer. Sæt kun API key lokalt på hver maskine, hvis du bruger Brave Search:
 
 ```bash
 echo 'export BRAVE_API_KEY="your-api-key-here"' >> ~/.zprofile
