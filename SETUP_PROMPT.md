@@ -1,51 +1,17 @@
 # SETUP_PROMPT
 
-Use this prompt with PI on a new machine after cloning this repo:
+Use this prompt with PI after cloning this repository:
 
 ---
 
-I cloned `~/Downloads/pi-setup-config`. Please set up my PI config from this repo.
+Set up selected PI configuration following README.md's scoped onboarding/recovery procedure. Use my platform choice, otherwise infer Darwin/Windows; ask only if unresolved.
 
-Do this:
+Inspect sources and destination conflicts, record exact files/JSON fields, and verify a protected backup outside active discovery roots before writes. Preserve unrelated configuration, OSM bridges/instructions/routes, credentials, auth, sessions and history. Existing exact authorization covers its selected changes; resolve only outstanding conflicts or missing authority.
 
-1. Ask me which platform profile to apply:
-   - `macos` -> use `config/macos/settings.json`
-   - `windows` -> use `config/windows/settings.json` for local models
-   - if I do not answer, infer from OS and use macOS on Darwin, Windows on Windows
-2. Verify these exist:
-   - selected profile settings file
-   - `config/windows/models.json` if Windows profile is selected
-   - `config/themes`
-   - `config/skills`
-   - `config/extensions`
-3. Read `README.md` so you understand what is intentionally included/excluded.
-4. Back up my current config if it exists:
-   - `~/.pi/agent` -> `~/.pi/agent.backup-<timestamp>`
-5. Apply repo config to `~/.pi/agent`:
-   - copy selected profile settings file to `~/.pi/agent/settings.json`
-   - if Windows profile is selected, copy `config/windows/models.json` to `~/.pi/agent/models.json`
-   - replace `~/.pi/agent/themes` with `config/themes`
-   - replace `~/.pi/agent/skills` with `config/skills`
-   - replace `~/.pi/agent/extensions` with `config/extensions`
-6. Install/update PI packages from `settings.json`:
-   - run `pi update --extensions` if available
-   - if that fails, run `pi update`
-   - do not manually copy package caches/git clones from another machine
-7. Ensure skill scripts are executable on macOS/Linux:
-   - run `find ~/.pi/agent/skills -type f -name "*.js" -exec chmod +x {} +`
-8. If Windows profile is selected:
-   - explain that local Lemonade models are included in `~/.pi/agent/models.json` for manual selection, but are not the default model
-   - default local endpoint is `http://127.0.0.1:13305/v1`
-   - remind me to start Lemonade/local server before selecting local models
-   - remind me to edit `~/.pi/agent/models.json` if endpoint/model changes
-9. Confirm result:
-   - show active theme from `~/.pi/agent/settings.json`
-   - show provider/model/thinking level
-   - if Windows profile is selected, show configured local model base URL from `~/.pi/agent/models.json` and confirm the default provider/model is still non-local unless changed by the user
-   - list packages from `~/.pi/agent/settings.json`
-   - list installed local skill folders, including brave-search, vps-temporary-ssh and ctx/context-mode skills
-   - list installed extension files/folders
-   - remind me to set `BRAVE_API_KEY` locally if I want to use `brave-search`
-10. Give me a short summary.
+Merge selected settings and optional Windows Lemonade providers. Preserve existing provider/model/thinking unless I selected a change; gpt-5.5/low are prior choices. Copy only selected owned skills, extension files and themes. Never replace whole roots, overwrite existing JSON wholesale, follow unexpected symlinks or chmod all skills.
 
-Only touch settings/themes/skills/extensions/packages. Do not touch auth, login, session, history, or cache files except what PI itself updates while installing packages.
+Use npm:context-mode as the normal single distribution. Exclude the six repo legacy context-mode folders from copying/discovery. Resolve existing duplicates using README's backup/conflict procedure before activation. Leave incomplete Brave backup uninstalled; preserve complete existing Brave. Do not load imported recovery instructions merely for onboarding.
+
+Install/update only the selected package when authorized using installed PI's supported commands. No broad update fallback or automatic alternate distribution on failure.
+
+Verify JSON, artifacts and actual discovery sources. Report active theme, provider/model/thinking, packages, local skills/extensions, backup location, preserved unrelated state, conflicts and unverified runtime behavior. On Windows report local endpoint and remind me to start Lemonade before manual model selection. Mention the local Brave key only if Brave is usable. Recover only this run's changed items per README, preserving later user changes.
